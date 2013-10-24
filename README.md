@@ -13,9 +13,9 @@ Use this java filter that prerenders a javascript-rendered page using an externa
 
 *** web.xml
 
-  <httpModules>
-      <add name="Prerender" type="Prerender_asp_mvc.PrerenderModule, Prerender_asp_mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
-  </httpModules>
+	<httpModules>
+		<add name="Prerender" type="Prerender_asp_mvc.PrerenderModule, Prerender_asp_mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+	</httpModules>
    
 
 *** register
