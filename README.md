@@ -11,14 +11,14 @@ Use this java filter that prerenders a javascript-rendered page using an externa
 
 1:Add this http module to your web.config or register it on HttpApplication:
 
-***web.xml
+*** web.xml
 
   <httpModules>
       <add name="Prerender" type="Prerender_asp_mvc.PrerenderModule, Prerender_asp_mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
-    </httpModules>
+  </httpModules>
    
 
-***register
+*** register
    
     using System;
     using System.Collections.Generic;
