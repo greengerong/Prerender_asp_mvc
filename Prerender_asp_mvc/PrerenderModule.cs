@@ -51,12 +51,27 @@ namespace Prerender_asp_mvc
             if (ShouldShowPrerenderedPage(request))
             {
                 var result = GetPrerenderedPageResponse(request);
-                if (result.StatusCode == HttpStatusCode.OK)
+
+                response.StatusCode = (int)result.StatusCode;
+
+                // The WebHeaderCollection is horrible, so we enumerate like this!
+                // We are adding the received headers from the prerender service
+                for (var i = 0; i < result.Headers.Count; ++i)
                 {
-                    response.Write(result.ResponseBody);
-                    response.Flush();
-                    context.CompleteRequest();
+                    var header = result.Headers.GetKey(i);
+                    var values = result.Headers.GetValues(i);
+
+                    if (values == null) continue;
+
+                    foreach (var value in values)
+                    {
+                        response.Headers.Add(header, value);
+                    }
                 }
+      
+                response.Write(result.ResponseBody);
+                response.Flush();
+                context.CompleteRequest();
             }
         }
 
@@ -69,9 +84,15 @@ namespace Prerender_asp_mvc
             SetProxy(webRequest);
             SetNoCache(webRequest);
 
+            // Add our key!
+            if (_prerenderConfig.Token.IsNotBlank())
+            {
+                webRequest.Headers.Add("X-Prerender-Token", _prerenderConfig.Token);
+            }
+
             var webResponse = (HttpWebResponse)webRequest.GetResponse();
             var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
-            return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd());
+            return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
         }
 
         private void SetProxy(HttpWebRequest webRequest)
@@ -91,6 +112,29 @@ namespace Prerender_asp_mvc
         private String GetApiUrl(HttpRequest request)
         {
             var url = request.Url.AbsoluteUri;
+
+            // Correct for HTTPS if that is what the request arrived at the load balancer as 
+            // (AWS and some other load balancers hide the HTTPS from us as we terminate SSL at the load balancer!)
+            if (string.Equals(request.Headers["X-Forwarded-Proto"], "https", StringComparison.InvariantCultureIgnoreCase))
+            {
+                url = url.Replace("http", "https");
+            }
+
+            // Remove the application from the URL
+            if (!string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+            {
+                // http://test.com/MyApp/?_escape_=/somewhere
+
+                url = url.Replace(request.ApplicationPath, string.Empty);
+            }
+
+            // Remove the _escaped_fragment_ from the URL if it exists!
+            var escapedFull = "?" + _Escaped_Fragment + "=/";
+            if (url.Contains(escapedFull))
+            {
+                url = url.Replace(escapedFull, string.Empty);
+            }
+ 
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
@@ -177,7 +221,13 @@ namespace Prerender_asp_mvc
         private bool IsInSearchUserAgent(string useAgent)
         {
             var crawlerUserAgents = GetCrawlerUserAgents();
-            return crawlerUserAgents.Any(item => String.Compare(useAgent, item, StringComparison.OrdinalIgnoreCase) == 0);
+
+            // We need to see if the user agent actually contains any of the partial user agents we have!
+            // THE ORIGINAL version compared for an exact match...!
+            return
+                (crawlerUserAgents.Any(
+                    crawlerUserAgent =>
+                    useAgent.IndexOf(crawlerUserAgent, StringComparison.InvariantCultureIgnoreCase) >= 0));
         }
 
         private IEnumerable<String> GetCrawlerUserAgents()

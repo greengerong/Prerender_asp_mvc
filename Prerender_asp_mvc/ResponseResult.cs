@@ -17,10 +17,17 @@ namespace Prerender_asp_mvc
             get;
         }
 
-        public ResponseResult(HttpStatusCode code, String body)
+        public WebHeaderCollection Headers
+        {
+            private set; 
+            get; 
+        }
+
+        public ResponseResult(HttpStatusCode code, String body, WebHeaderCollection headers)
         {
             StatusCode = code;
             ResponseBody = body;
+            Headers = headers;
         }
 
     }

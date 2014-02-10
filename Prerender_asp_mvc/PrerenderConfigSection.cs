@@ -6,13 +6,13 @@ namespace Prerender_asp_mvc
 {
     public sealed class PrerenderConfigSection : ConfigurationSection
     {
-        [ConfigurationProperty("prerenderServiceUrl", DefaultValue = "http://prerender.herokuapp.com/")]
+        [ConfigurationProperty("prerenderServiceUrl", DefaultValue = "http://service.prerender.io/")]
         public String PrerenderServiceUrl
         {
             get
             {
                 var prerenderServiceUrl = (String)this["prerenderServiceUrl"];
-                return prerenderServiceUrl.IsNotBlank() ? prerenderServiceUrl : "http://prerender.herokuapp.com/";
+                return prerenderServiceUrl.IsNotBlank() ? prerenderServiceUrl : "http://service.prerender.io/";
             }
             set
             {
@@ -115,6 +115,19 @@ namespace Prerender_asp_mvc
             set
             {
                 this["Proxy"] = value;
+            }
+        }
+
+        [ConfigurationProperty("token")]
+        public String Token
+        {
+            get
+            {
+                return (String)this["token"];
+            }
+            set
+            {
+                this["token"] = value;
             }
         }
     }
