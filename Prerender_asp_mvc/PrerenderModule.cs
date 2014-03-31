@@ -232,8 +232,8 @@ namespace Prerender_asp_mvc
 
         private IEnumerable<String> GetCrawlerUserAgents()
         {
-            var crawlerUserAgents = new List<string>(new[]{"googlebot", "yahoo", "bingbot", "baiduspider",
-                "facebookexternalhit", "twitterbot"});
+            var crawlerUserAgents = new List<string>(new[]{"baiduspider", "facebookexternalhit", "twitterbot",
+                "rogerbot", "linkedinbot", "embedly", "bufferbot", "quora link preview", "showyoubot", "outbrain"});
 
             if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
             {
