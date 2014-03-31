@@ -101,6 +101,10 @@ If you want to make sure your pages are rendering correctly:
 7. Type `googlebot` into the input box.
 8. Refresh the page (make sure to keep the developer tools open).
 
+
+TODO:
+
+*	upgrade version.(wait for my local env.)
 ## License
 
 The MIT License (MIT)
