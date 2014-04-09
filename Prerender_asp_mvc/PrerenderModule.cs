@@ -90,9 +90,19 @@ namespace Prerender_asp_mvc
                 webRequest.Headers.Add("X-Prerender-Token", _prerenderConfig.Token);
             }
 
-            var webResponse = (HttpWebResponse)webRequest.GetResponse();
-            var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
-            return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
+            try
+            {
+                // Get the web response and read content etc. if successful
+                var webResponse = (HttpWebResponse) webRequest.GetResponse();
+                var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
+                return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
+            }
+            catch (WebException e)
+            {
+                // Handle response WebExceptions for invalid renders (404s, 504s etc.) - but we still want the content
+                var reader = new StreamReader(e.Response.GetResponseStream(), Encoding.UTF8);
+                return new ResponseResult(((HttpWebResponse)e.Response).StatusCode, reader.ReadToEnd(), e.Response.Headers);
+            }
         }
 
         private void SetProxy(HttpWebRequest webRequest)
@@ -232,8 +242,11 @@ namespace Prerender_asp_mvc
 
         private IEnumerable<String> GetCrawlerUserAgents()
         {
-            var crawlerUserAgents = new List<string>(new[]{"baiduspider", "facebookexternalhit", "twitterbot",
-                "rogerbot", "linkedinbot", "embedly", "bufferbot", "quora link preview", "showyoubot", "outbrain"});
+            var crawlerUserAgents = new List<string>(new[]
+                {
+                    "bingbot", "baiduspider", "facebookexternalhit", "twitterbot", "yandex", "rogerbot",
+                    "linkedinbot", "embedly", "bufferbot", "quora link preview", "showyoubot", "outbrain"
+                });
 
             if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
             {
