@@ -3,7 +3,7 @@ Prerender_asp_mvc
 
 Are you using backbone, angular, emberjs, etc, but you're unsure about the SEO implications?
 
-Use this java filter that prerenders a javascript-rendered page using an external service and returns the HTML to the search engine crawler for SEO.
+Use this filter that prerenders a javascript-rendered page using an external service and returns the HTML to the search engine crawler for SEO.
 
 `Note:` If you are using a `#` in your urls, make sure to change it to `#!`. [View Google's ajax crawling protocol](https://developers.google.com/webmasters/ajax-crawling/docs/getting-started)
 
