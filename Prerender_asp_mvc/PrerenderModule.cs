@@ -137,13 +137,6 @@ namespace Prerender_asp_mvc
 
                 url = url.Replace(request.ApplicationPath, string.Empty);
             }
-
-            // Remove the _escaped_fragment_ from the URL if it exists!
-            var escapedFull = "?" + _Escaped_Fragment + "=/";
-            if (url.Contains(escapedFull))
-            {
-                url = url.Replace(escapedFull, string.Empty);
-            }
  
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
