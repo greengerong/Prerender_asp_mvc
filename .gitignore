@@ -2,4 +2,5 @@
 */obj/*
 *.suo
 packages/
+.DS_Store
 
