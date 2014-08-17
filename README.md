@@ -9,6 +9,8 @@ Use this filter that prerenders a javascript-rendered page using an external ser
 
 `Note:` Make sure you have more than one webserver thread/process running because the prerender service will make a request to your server to render the HTML.
 
+Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Prerender_asp_mvc_demo).
+
 1:Add this http module to your web.config or register it on HttpApplication:
 
 *** web.xml
