@@ -131,11 +131,11 @@ namespace Prerender.io
             }
 
             // Remove the application from the URL
-			//if (!string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-			//{
-			//	// http://test.com/MyApp/?_escape_=/somewhere
-			//	url = url.Replace(request.ApplicationPath, string.Empty);
-			//}
+			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+			{
+				// http://test.com/MyApp/?_escape_=/somewhere
+				url = url.Replace(request.ApplicationPath, string.Empty);
+			}
  
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
