@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public static class Utils
     {

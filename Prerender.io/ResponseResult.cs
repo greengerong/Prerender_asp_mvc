@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public class ResponseResult
     {

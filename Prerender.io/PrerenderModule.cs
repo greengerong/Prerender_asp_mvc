@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public class PrerenderModule : IHttpModule
     {

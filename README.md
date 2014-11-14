@@ -1,5 +1,5 @@
-Prerender_asp_mvc
-=================
+Prerender.io middleware for ASP.NET projects
+============================================
 
 Are you using backbone, angular, emberjs, etc, but you're unsure about the SEO implications?
 
@@ -16,7 +16,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 *** web.xml
 
 	<httpModules>
-		<add name="Prerender" type="Prerender_asp_mvc.PrerenderModule, Prerender_asp_mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+		<add name="Prerender" type="Prerender.io.PrerenderModule, Prerender.io, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null"/>
 	</httpModules>
    
 
@@ -42,7 +42,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
                 {
                     _isStarting = true;
     
-                    DynamicModuleUtility.RegisterModule(typeof(Prerender_asp_mvc.PrerenderModule));
+                    DynamicModuleUtility.RegisterModule(typeof(Prerender.io.PrerenderModule));
                 }
             }
         }
@@ -67,7 +67,7 @@ you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_a
 
 ## Customization 
  
- you can add config on your web.config by Prerender_asp_mvc.PrerenderConfigSection.
+ you can add config on your web.config by Prerender.io.PrerenderConfigSection.
 
 ### crawlerUserAgents
 example: someproxy,someproxy1

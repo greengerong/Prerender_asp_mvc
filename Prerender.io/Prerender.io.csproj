@@ -7,8 +7,8 @@
     <ProjectGuid>{EF621345-0520-4F7A-80F4-2C04EEAF2D44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Prerender_asp_mvc</RootNamespace>
-    <AssemblyName>Prerender_asp_mvc</AssemblyName>
+    <RootNamespace>Prerender.io</RootNamespace>
+    <AssemblyName>Prerender.io</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

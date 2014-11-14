@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public class ProxyConfigElement : ConfigurationElement
     {
