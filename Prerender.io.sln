@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prerender_asp_mvc", "Prerender_asp_mvc\Prerender_asp_mvc.csproj", "{EF621345-0520-4F7A-80F4-2C04EEAF2D44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prerender.io", "Prerender.io\Prerender.io.csproj", "{EF621345-0520-4F7A-80F4-2C04EEAF2D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

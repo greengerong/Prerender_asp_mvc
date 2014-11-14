@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public sealed class PrerenderConfigSection : ConfigurationSection
     {
@@ -19,6 +19,19 @@ namespace Prerender_asp_mvc
                 this["prerenderServiceUrl"] = value;
             }
         }
+
+		[ConfigurationProperty("stripApplicationNameFromRequestUrl", DefaultValue = false)]
+		public bool StripApplicationNameFromRequestUrl
+		{
+			get
+			{
+				return (bool)this["stripApplicationNameFromRequestUrl"];
+			}
+			set
+			{
+				this["stripApplicationNameFromRequestUrl"] = value;
+			}
+		}
 
         [ConfigurationProperty("whitelist")]
         public String WhitelistString

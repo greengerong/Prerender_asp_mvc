@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Prerender_asp_mvc
+namespace Prerender.io
 {
     public class PrerenderModule : IHttpModule
     {
@@ -131,12 +131,11 @@ namespace Prerender_asp_mvc
             }
 
             // Remove the application from the URL
-            if (!string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-            {
-                // http://test.com/MyApp/?_escape_=/somewhere
-
-                url = url.Replace(request.ApplicationPath, string.Empty);
-            }
+			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+			{
+				// http://test.com/MyApp/?_escape_=/somewhere
+				url = url.Replace(request.ApplicationPath, string.Empty);
+			}
  
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
