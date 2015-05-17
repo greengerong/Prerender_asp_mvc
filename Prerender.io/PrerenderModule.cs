@@ -127,7 +127,7 @@ namespace Prerender.io
             // (AWS and some other load balancers hide the HTTPS from us as we terminate SSL at the load balancer!)
             if (string.Equals(request.Headers["X-Forwarded-Proto"], "https", StringComparison.InvariantCultureIgnoreCase))
             {
-                url = url.Replace("http", "https");
+                url = url.Replace("http://", "https://");
             }
 
             // Remove the application from the URL
