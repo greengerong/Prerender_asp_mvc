@@ -79,7 +79,7 @@ example: someproxy,someproxy1
 
 ### Using your own prerender service
 
-If you've deployed the prerender service on your own, set the `PRERENDER_SERVICE_URL` environment variable so that this package points there instead. Otherwise, it will default to the service already deployed at `http://prerender.herokuapp.com`
+If you've deployed the prerender service on your own, set the `PRERENDER_SERVICE_URL` environment variable so that this package points there instead. Otherwise, it will default to the service already deployed at `http://service.prerender.io`
 
 	$ export PRERENDER_SERVICE_URL=<new url>
 
