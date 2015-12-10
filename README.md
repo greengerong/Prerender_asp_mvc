@@ -18,10 +18,10 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 	<httpModules>
 		<add name="Prerender" type="Prerender.io.PrerenderModule, Prerender.io, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null"/>
 	</httpModules>
-   
+
 
 *** register
-   
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -29,19 +29,19 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Microsoft.Web.WebPages.OAuth;
     using Demo.Models;
-    
+
     namespace Demo
     {
         public static class PreApplicationStartCode
         {
             private static bool _isStarting;
-    
+
             public static void PreStart()
             {
                 if (!_isStarting)
                 {
                     _isStarting = true;
-    
+
                     DynamicModuleUtility.RegisterModule(typeof(Prerender.io.PrerenderModule));
                 }
             }
@@ -50,8 +50,8 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 
     on AssemblyInfo.cs :
     [assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
-    
-you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_asp_mvc/blob/master/Demo/App_Start/PreApplicationStartCode.cs)
+
+you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_asp_mvc_demo/blob/master/App_Start/PreApplicationStartCode.cs)
 
 #### Please see demo on this repo.
 
@@ -65,8 +65,8 @@ you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_a
 2. Make a `GET` request to the [prerender service](https://github.com/collectiveip/prerender)(phantomjs server) for the page's prerendered HTML
 3. Return that HTML to the crawler
 
-## Customization 
- 
+## Customization
+
  you can add config on your web.config by Prerender.io.PrerenderConfigSection.
 
 ### crawlerUserAgents
