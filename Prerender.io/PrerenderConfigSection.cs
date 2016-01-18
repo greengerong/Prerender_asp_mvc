@@ -143,5 +143,31 @@ namespace Prerender.io
                 this["token"] = value;
             }
         }
+
+        [ConfigurationProperty("timeout")]
+        public int? Timeout
+        {
+            get
+            {
+                return (int?)this["timeout"];
+            }
+            set
+            {
+                this["timeout"] = value;
+            }
+        }
+
+        [ConfigurationProperty("numberOfRetries")]
+        public int? NumberOfRetries
+        {
+            get
+            {
+                return (int?)this["numberOfRetries"];
+            }
+            set
+            {
+                this["numberOfRetries"] = value;
+            }
+        }
     }
 }

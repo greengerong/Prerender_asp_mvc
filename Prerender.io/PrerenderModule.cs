@@ -33,14 +33,7 @@ namespace Prerender.io
 
         protected void context_BeginRequest(object sender, EventArgs e)
         {
-            try
-            {
-                DoPrerender(_context);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.ToString());
-            }
+            DoPrerender(_context);
         }
 
         private void DoPrerender(HttpApplication context)
@@ -78,31 +71,58 @@ namespace Prerender.io
         private ResponseResult GetPrerenderedPageResponse(HttpRequest request)
         {
             var apiUrl = GetApiUrl(request);
+            var numberOfRetries = 0;
             var webRequest = (HttpWebRequest)WebRequest.Create(apiUrl);
             webRequest.Method = "GET";
             webRequest.UserAgent = request.UserAgent;
             SetProxy(webRequest);
             SetNoCache(webRequest);
-
+            
             // Add our key!
             if (_prerenderConfig.Token.IsNotBlank())
             {
                 webRequest.Headers.Add("X-Prerender-Token", _prerenderConfig.Token);
             }
 
-            try
+            // Add timeout to request if set
+            if (_prerenderConfig.Timeout.HasValue)
             {
-                // Get the web response and read content etc. if successful
-                var webResponse = (HttpWebResponse) webRequest.GetResponse();
-                var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
-                return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
+                webRequest.Timeout = _prerenderConfig.Timeout.Value;
             }
-            catch (WebException e)
+
+            // Add retries if set
+            if (_prerenderConfig.NumberOfRetries.HasValue)
             {
-                // Handle response WebExceptions for invalid renders (404s, 504s etc.) - but we still want the content
-                var reader = new StreamReader(e.Response.GetResponseStream(), Encoding.UTF8);
-                return new ResponseResult(((HttpWebResponse)e.Response).StatusCode, reader.ReadToEnd(), e.Response.Headers);
+                numberOfRetries = _prerenderConfig.NumberOfRetries.Value;
             }
+
+            var count = 0;
+            ResponseResult lastResult = null;
+            while (count <= numberOfRetries)
+            {
+                try
+                {
+                    // Get the web response and read content etc. if successful
+                    var webResponse = (HttpWebResponse)webRequest.GetResponse();
+                    var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
+                    return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
+                }
+                catch (WebException e)
+                {
+                    if (e.Status == WebExceptionStatus.Timeout)
+                    {
+                        lastResult = new ResponseResult(HttpStatusCode.RequestTimeout, "Request Timeout reached.", new WebHeaderCollection());
+                    }
+                    else
+                    {
+                        // Handle response WebExceptions for invalid renders (404s, 504s etc.) - but we still want the content
+                        var reader = new StreamReader(e.Response.GetResponseStream(), Encoding.UTF8);
+                        lastResult = new ResponseResult(((HttpWebResponse)e.Response).StatusCode, reader.ReadToEnd(), e.Response.Headers);
+                    }
+                    count++;
+                }
+            }
+            return lastResult;
         }
 
         private void SetProxy(HttpWebRequest webRequest)
