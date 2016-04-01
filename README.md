@@ -75,7 +75,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 
 7: Build and publish you web application. 
 
-8: To make shure the middleware works correctly, you can create a first request by surfing to `[YOURURL]?_escaped_fragment_=`, then log into your account [Prerender.io](https://prerender.io). If there are errors shown in red, something went wrong. Otherwise, you're good to go!
+8: To make shure the middleware works correctly, you can create a first request by surfing to `[YOURURL]?_escaped_fragment_=`, then log into your [Prerender.io](https://prerender.io) account. If there are errors shown in red, something went wrong. Otherwise, you're good to go!
     
 ## How it works / Testing
 1. Check to make sure we should show a prerendered page
@@ -88,7 +88,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 
 ####OR
 
-Mac:
+  Mac:
   1. Open the Developer Tools in Chrome (Cmd + Atl + J)
   2. Click the Settings gear in the bottom right corner.
   3. Click "Overrides" on the left side of the settings panel.
@@ -97,7 +97,7 @@ Mac:
   7. Type `googlebot` into the input box.
   8. Refresh the page (make sure to keep the developer tools open).
 
-Windows:
+  Windows:
   1. Open the Developer Tools in Chrome (Ctrl + shift + i)
   2. Open settings (F1)
   3. Click "Devices" on the left side of the settings panel.
