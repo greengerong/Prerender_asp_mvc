@@ -40,7 +40,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
   - extensionsToIgnore
   - crawlerUserAgents
 
-5:Creata a new class called PreApplicationStartCode in the App_Start folder:
+5:Create a new class called PreApplicationStartCode in the App_Start folder:
 
     using System;
     using System.Collections.Generic;
