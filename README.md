@@ -11,6 +11,8 @@ Use this filter that prerenders a javascript-rendered page using an external ser
 
 Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Prerender_asp_mvc_demo).
 
+##Installing the middleware
+
 1: Do a build of this project and include and reference the DLL in your web application
 
 2:Add the http module to your web.config:
@@ -67,9 +69,9 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
     }
 
 6:Add this line to the bottom of the AssemblyInfo.cs file:
-    '''
+```
 	[assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
-	'''
+```
 
 6:Build and publish you web application. 
 
