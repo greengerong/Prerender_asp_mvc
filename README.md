@@ -11,17 +11,34 @@ Use this filter that prerenders a javascript-rendered page using an external ser
 
 Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Prerender_asp_mvc_demo).
 
-1:Add this http module to your web.config or register it on HttpApplication:
+1: Do a build of this project and include and reference the DLL in your web application
 
-*** web.xml
+2:Add the http module to your web.config:
 
 	<httpModules>
 		<add name="Prerender" type="Prerender.io.PrerenderModule, Prerender.io, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null"/>
 	</httpModules>
-   
 
-*** register
-   
+3:Sign up to get a [token](https://prerender.io/signup) and add a prerender section to the web.config file containing your token*:
+
+	<configSections>
+		<section name="prerender" type="Prerender.io.PrerenderConfigSection, Prerender.io, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	</configSections>
+
+	<prerender 
+		token="[YOURTOKEN]">
+	</prerender>
+
+	*you can add following additional attributes to override or add to the custom settings (see PrerenderModule.cs):
+		- prerenderServiceUrl
+		- stripApplicationNameFromRequestUrl
+		- whitelist
+		- blacklist
+		- extensionsToIgnore
+		- crawlerUserAgents
+
+4:Creata a new class called PreApplicationStartCode in the App_Start folder:
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -48,14 +65,9 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
         }
     }
 
-    on AssemblyInfo.cs :
+5:Add this line to the bottom of the AssemblyInfo.cs file:
     [assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
     
-you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_asp_mvc/blob/master/Demo/App_Start/PreApplicationStartCode.cs)
-
-#### Please see demo on this repo.
-
-
 ## How it works
 1. Check to make sure we should show a prerendered page
 	1. Check if the request is from a crawler (`_escaped_fragment_` or agent string)
@@ -64,18 +76,6 @@ you can see [PreApplicationStartCode](https://github.com/greengerong/Prerender_a
 	4. (optional) Check to make sure the url isn't in the blacklist
 2. Make a `GET` request to the [prerender service](https://github.com/collectiveip/prerender)(phantomjs server) for the page's prerendered HTML
 3. Return that HTML to the crawler
-
-## Customization 
- 
- you can add config on your web.config by Prerender.io.PrerenderConfigSection.
-
-### crawlerUserAgents
-example: someproxy,someproxy1
-
-### whitelist
-
-### blacklist
-
 
 ### Using your own prerender service
 
@@ -88,8 +88,6 @@ Or on heroku:
 	$ heroku config:add PRERENDER_SERVICE_URL=<new url>
 
 As an alternative, you can pass `prerender_service_url` in the options object during initialization of the middleware
-
-
 
 ## Testing
 
