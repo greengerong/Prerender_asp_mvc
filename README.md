@@ -29,15 +29,16 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 		token="[YOURTOKEN]">
 	</prerender>
 
-*you can add following additional attributes to override or add to the custom settings (see PrerenderModule.cs):
-	- prerenderServiceUrl
-	- stripApplicationNameFromRequestUrl
-	- whitelist
-	- blacklist
-	- extensionsToIgnore
-	- crawlerUserAgents
+4:you can add following additional attributes to the prerender section to override or add to the custom settings (see PrerenderModule.cs):
 
-4:Creata a new class called PreApplicationStartCode in the App_Start folder:
+  - prerenderServiceUrl
+  - stripApplicationNameFromRequestUrl
+  - whitelist
+  - blacklist
+  - extensionsToIgnore
+  - crawlerUserAgents
+
+5:Creata a new class called PreApplicationStartCode in the App_Start folder:
 
     using System;
     using System.Collections.Generic;
@@ -65,9 +66,10 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
         }
     }
 
-5:Add this line to the bottom of the AssemblyInfo.cs file:
-    
+6:Add this line to the bottom of the AssemblyInfo.cs file:
+    ***
 	[assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
+	***
 
 6:Build and publish you web application. 
 
