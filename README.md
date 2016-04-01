@@ -29,13 +29,13 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 		token="[YOURTOKEN]">
 	</prerender>
 
-	*you can add following additional attributes to override or add to the custom settings (see PrerenderModule.cs):
-		- prerenderServiceUrl
-		- stripApplicationNameFromRequestUrl
-		- whitelist
-		- blacklist
-		- extensionsToIgnore
-		- crawlerUserAgents
+*you can add following additional attributes to override or add to the custom settings (see PrerenderModule.cs):
+	- prerenderServiceUrl
+	- stripApplicationNameFromRequestUrl
+	- whitelist
+	- blacklist
+	- extensionsToIgnore
+	- crawlerUserAgents
 
 4:Creata a new class called PreApplicationStartCode in the App_Start folder:
 
@@ -66,7 +66,13 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
     }
 
 5:Add this line to the bottom of the AssemblyInfo.cs file:
-    [assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
+    
+	[assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
+
+6:Build and publish you web application. 
+
+7:To make shure the middleware works correctly, you can create a first request by surfing to [YOURURL]?_escaped_fragment_= 
+  Log into your account [Prerender.io](https://prerender.io). If there are errors shown in red, something went wrong. Otherwise, you're good to go!
     
 ## How it works
 1. Check to make sure we should show a prerendered page
