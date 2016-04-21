@@ -81,6 +81,7 @@ namespace Prerender.io
             var webRequest = (HttpWebRequest)WebRequest.Create(apiUrl);
             webRequest.Method = "GET";
             webRequest.UserAgent = request.UserAgent;
+            webRequest.AllowAutoRedirect = false;
             SetProxy(webRequest);
             SetNoCache(webRequest);
 
