@@ -68,7 +68,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
         }
     }
 
-6: Add this line to the bottom of the AssemblyInfo.cs file:
+6: Add this line to the bottom of the AssemblyInfo.cs file( [PreApplicationStartCode](https://github.com/greengerong/Prerender_asp_mvc_demo/blob/master/App_Start/PreApplicationStartCode.cs)):
 ```
 [assembly: PreApplicationStartMethod(typeof(Demo.PreApplicationStartCode), "PreStart")]
 ```
