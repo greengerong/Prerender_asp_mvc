@@ -166,6 +166,10 @@ namespace Prerender.io
                 return false;
             }
 
+            if (IgnoreAllSubdomains(url))
+            {
+                return false;
+            }
 
             if (IsInResources(url))
             {
@@ -219,6 +223,21 @@ namespace Prerender.io
                 extensionsToIgnore.AddRange(_prerenderConfig.ExtensionsToIgnore);
             }
             return extensionsToIgnore;
+        }
+        private bool IgnoreAllSubdomains(Uri url)
+        {
+            if (_prerenderConfig.IgnoreAllSubdomains)
+            {
+                char[] separators = new char[] { '.' };
+                string hostname = url.Host;
+                string[] domains = hostname.Split(separators);
+                string subdomain = domains[0];
+                if (!String.IsNullOrEmpty(subdomain))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool IsInSearchUserAgent(string useAgent)
