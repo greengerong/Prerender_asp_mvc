@@ -68,7 +68,7 @@ namespace Prerender.io
                         response.Headers.Add(header, value);
                     }
                 }
-      
+
                 response.Write(result.ResponseBody);
                 response.Flush();
                 context.CompleteRequest();
@@ -94,7 +94,7 @@ namespace Prerender.io
             try
             {
                 // Get the web response and read content etc. if successful
-                var webResponse = (HttpWebResponse) webRequest.GetResponse();
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
                 var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
                 return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
             }
@@ -132,12 +132,12 @@ namespace Prerender.io
             }
 
             // Remove the application from the URL
-			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-			{
-				// http://test.com/MyApp/?_escape_=/somewhere
-				url = url.Replace(request.ApplicationPath, string.Empty);
-			}
- 
+            if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+            {
+                // http://test.com/MyApp/?_escape_=/somewhere
+                url = url.Replace(request.ApplicationPath, string.Empty);
+            }
+
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
@@ -151,6 +151,11 @@ namespace Prerender.io
             var url = request.Url;
             var referer = request.UrlReferrer == null ? string.Empty : request.UrlReferrer.AbsoluteUri;
 
+            if (IgnoreAllSubdomains(url))
+            {
+                return false;
+            }
+
             if (HasEscapedFragment(request))
             {
                 return true;
@@ -162,11 +167,6 @@ namespace Prerender.io
             }
 
             if (!IsInSearchUserAgent(useAgent))
-            {
-                return false;
-            }
-
-            if (IgnoreAllSubdomains(url))
             {
                 return false;
             }
@@ -228,16 +228,32 @@ namespace Prerender.io
         {
             if (_prerenderConfig.IgnoreAllSubdomains)
             {
-                char[] separators = new char[] { '.' };
-                string hostname = url.Host;
-                string[] domains = hostname.Split(separators);
-                string subdomain = domains[0];
-                if (!String.IsNullOrEmpty(subdomain))
+                string subDomain = GetSubDomain(url);
+
+                if (!String.IsNullOrEmpty(subDomain))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        private string GetSubDomain(Uri url)
+        {
+
+            if (url.HostNameType == UriHostNameType.Dns)
+            {
+                string host = url.Host;
+
+                if (host.Split('.').Length > 2)
+                {
+                    int lastIndex = host.LastIndexOf(".");
+                    int index = host.LastIndexOf(".", lastIndex - 1);
+                    return host.Substring(0, index);
+                }
+            }
+
+            return null;
         }
 
         private bool IsInSearchUserAgent(string useAgent)
