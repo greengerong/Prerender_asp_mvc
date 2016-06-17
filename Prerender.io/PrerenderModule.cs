@@ -229,9 +229,13 @@ namespace Prerender.io
             if (_prerenderConfig.IgnoreAllSubdomains)
             {
                 string subDomain = GetSubDomain(url);
-
+                
                 if (!String.IsNullOrEmpty(subDomain))
                 {
+                    if (subDomain.ToLower() == "www")
+                    {
+                        return false;
+                    }
                     return true;
                 }
             }
