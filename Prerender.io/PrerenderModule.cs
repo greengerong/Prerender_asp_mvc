@@ -236,8 +236,17 @@ namespace Prerender.io
         {
             var crawlerUserAgents = new List<string>(new[]
                 {
-                    "bingbot", "baiduspider", "facebookexternalhit", "twitterbot", "yandex", "rogerbot",
-                    "linkedinbot", "embedly", "bufferbot", "quora link preview", "showyoubot", "outbrain"
+                    // googlebot, yahoo, and bingbot are not in this list because
+                    // we support _escaped_fragment_ and want to ensure people aren't
+                    // penalized for cloaking.
+                    // "googlebot", 
+                    // "yahoo", 
+                    // "bingbot",
+                    "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
+                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
+                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
+                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
+                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "yandex", "bufferbot"
                 });
 
             if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
