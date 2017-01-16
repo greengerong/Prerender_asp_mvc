@@ -247,7 +247,7 @@ namespace Prerender.io
                     "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
                     "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
                     "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
-                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "yandex", "bufferbot"
+                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
                 });
 
             if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
