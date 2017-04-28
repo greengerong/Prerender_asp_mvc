@@ -122,7 +122,10 @@ namespace Prerender.io
 
         private String GetApiUrl(HttpRequest request)
         {
-            var url = request.Url.AbsoluteUri;
+	    //var url = request.Url.AbsoluteUri;
+	    //use request.RawUrl to get the original url
+	    //use System.Uri.EscapeDataString to encode the url
+	    var url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, System.Uri.EscapeDataString(request.RawUrl));
 
             // Correct for HTTPS if that is what the request arrived at the load balancer as 
             // (AWS and some other load balancers hide the HTTPS from us as we terminate SSL at the load balancer!)
@@ -213,7 +216,7 @@ namespace Prerender.io
             var extensionsToIgnore = new List<string>(new[]{".js", ".css", ".less", ".png", ".jpg", ".jpeg",
                 ".gif", ".pdf", ".doc", ".txt", ".zip", ".mp3", ".rar", ".exe", ".wmv", ".doc", ".avi", ".ppt", ".mpg",
                 ".mpeg", ".tif", ".wav", ".mov", ".psd", ".ai", ".xls", ".mp4", ".m4a", ".swf", ".dat", ".dmg",
-                ".iso", ".flv", ".m4v", ".torrent"});
+                ".iso", ".flv", ".m4v", ".torrent", ".txt"});
             if (_prerenderConfig.ExtensionsToIgnore.IsNotEmpty())
             {
                 extensionsToIgnore.AddRange(_prerenderConfig.ExtensionsToIgnore);
