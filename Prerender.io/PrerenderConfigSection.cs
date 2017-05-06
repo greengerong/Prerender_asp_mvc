@@ -88,6 +88,19 @@ namespace Prerender.io
             }
         }
 
+        [ConfigurationProperty("ignoreAllSubdomains")]
+        public bool IgnoreAllSubdomains
+        {
+            get
+            {
+                return (bool)this["ignoreAllSubdomains"];
+            }
+            set
+            {
+                this["ignoreAllSubdomains"] = value;
+            }
+        }
+
         public IEnumerable<String> ExtensionsToIgnore
         {
             get
