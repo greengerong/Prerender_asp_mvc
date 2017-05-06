@@ -122,7 +122,14 @@ namespace Prerender.io
 
         private String GetApiUrl(HttpRequest request)
         {
-            var url = request.Url.AbsoluteUri;
+            // var url = request.Url.AbsoluteUri; (not working with angularjs)
+            // use request.RawUrl instead of request.Url.AbsoluteUri to get the original url
+            // becuase angularjs requires a rewrite and requests are rewritten to base /
+            var url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, request.RawUrl);
+
+            // request.RawUrl have the _escaped_fragment_ query string
+            // Prerender server remove it before making a request, but caching plugins happen before prerender server remove it
+            url = RemoveQueryStringByKey(url, "_escaped_fragment_");
 
             // Correct for HTTPS if that is what the request arrived at the load balancer as 
             // (AWS and some other load balancers hide the HTTPS from us as we terminate SSL at the load balancer!)
@@ -142,6 +149,24 @@ namespace Prerender.io
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
                 : string.Format("{0}/{1}", prerenderServiceUrl, url);
+        }
+	
+	public static string RemoveQueryStringByKey(string url, string key)
+        {
+            var uri = new Uri(url);
+
+            // this gets all the query string key value pairs as a collection
+            var newQueryString = HttpUtility.ParseQueryString(uri.Query);
+
+            // this removes the key if exists
+            newQueryString.Remove(key);
+
+            // this gets the page path from root without QueryString
+            string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+
+            return newQueryString.Count > 0
+                ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
+                : pagePathWithoutQueryString;
         }
 
 
