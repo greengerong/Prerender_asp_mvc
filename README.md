@@ -11,7 +11,7 @@ Use this filter that prerenders a javascript-rendered page using an external ser
 
 Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Prerender_asp_mvc_demo).
 
-##Installing the middleware
+## Installing the middleware
 
 1: Do a build of this project and include and reference the DLL in your web application
 
@@ -86,9 +86,9 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
 2. Make a `GET` request to the [prerender service](https://github.com/collectiveip/prerender)(phantomjs server) for the page's prerendered HTML
 3. Return that HTML to the crawler
 
-####OR
+#### OR
 
-#####Mac:
+##### Mac:
   1. Open the Developer Tools in Chrome (Cmd + Atl + J)
   2. Click the Settings gear in the bottom right corner.
   3. Click "Overrides" on the left side of the settings panel.
@@ -97,7 +97,7 @@ Demo project moved to [Prerender_asp_mvc_demo](https://github.com/greengerong/Pr
   7. Type `googlebot` into the input box.
   8. Refresh the page (make sure to keep the developer tools open).
 
-#####Windows:
+##### Windows:
   1. Open the Developer Tools in Chrome (Ctrl + shift + i)
   2. Open settings (F1)
   3. Click "Devices" on the left side of the settings panel.
