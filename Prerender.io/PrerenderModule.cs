@@ -122,10 +122,21 @@ namespace Prerender.io
 
         private String GetApiUrl(HttpRequest request)
         {
-            // var url = request.Url.AbsoluteUri; (not working with angularjs)
-            // use request.RawUrl instead of request.Url.AbsoluteUri to get the original url
-            // becuase angularjs requires a rewrite and requests are rewritten to base /
-            var url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, request.RawUrl);
+            var xHostHeader = request.Headers["X-Host"];
+            var url = string.Empty;
+            if (xHostHeader != null)
+            {
+                // when there is a CDN in front of the WebApp the url might be mistaken with the traffic manager
+                // therefore the X-Host header provided value should be used instaed of the request.Url
+                url = string.Format("{0}://{1}{2}", request.Url.Scheme, xHostHeader, request.RawUrl);
+            }
+            else
+            {
+                // var url = request.Url.AbsoluteUri; (not working with angularjs)
+                // use request.RawUrl instead of request.Url.AbsoluteUri to get the original url
+                // becuase angularjs requires a rewrite and requests are rewritten to base /
+                url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, request.RawUrl);
+            }
 
             // request.RawUrl have the _escaped_fragment_ query string
             // Prerender server remove it before making a request, but caching plugins happen before prerender server remove it
