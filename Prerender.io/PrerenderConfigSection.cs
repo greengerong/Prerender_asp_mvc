@@ -143,5 +143,24 @@ namespace Prerender.io
                 this["token"] = value;
             }
         }
+
+        /// <summary>
+        /// CDNs use the X-host to provide the actual web address,
+        /// i.e. if we have the address www.my-address.com which uses the my-traffic-manager.manager.com, 
+        /// the X-Host would containt "my-address.com" while the prerender.io would provide my-traffic-manager.manager.com. 
+        /// In other words we would have https://my-traffic-manager.com/users indexed instead of http://my-address.com/users
+        /// </summary>
+        [ConfigurationProperty("useXHostHeader", DefaultValue = false)]
+        public bool UseXHostHeader
+        {
+            get
+            {
+                return (bool)this["useXHostHeader"];
+            }
+            set
+            {
+                this["useXHostHeader"] = value;
+            }
+        }
     }
 }
