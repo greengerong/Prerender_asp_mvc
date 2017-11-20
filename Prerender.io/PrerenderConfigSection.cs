@@ -143,5 +143,18 @@ namespace Prerender.io
                 this["token"] = value;
             }
         }
+
+        [ConfigurationProperty("requestTimeout", DefaultValue = 900)]
+        public int RequestTimeout
+        {
+            get
+            {
+                return this["requestTimeout"] != null ? (int)this["requestTimeout"] : 900;
+            }
+            set
+            {
+                this["requestTimeout"] = value;
+            }
+        }
     }
 }
