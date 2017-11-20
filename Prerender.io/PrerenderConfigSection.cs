@@ -144,12 +144,12 @@ namespace Prerender.io
             }
         }
 
-        [ConfigurationProperty("requestTimeout", DefaultValue = 900)]
+        [ConfigurationProperty("requestTimeout", DefaultValue = 15000)]
         public int RequestTimeout
         {
             get
             {
-                return this["requestTimeout"] != null ? (int)this["requestTimeout"] : 900;
+                return this["requestTimeout"] != null ? (int)this["requestTimeout"] : 15000;
             }
             set
             {
