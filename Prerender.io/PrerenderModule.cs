@@ -172,27 +172,16 @@ namespace Prerender.io
 
         private bool ShouldShowPrerenderedPage(HttpRequest request)
         {
-            var useAgent = request.UserAgent;
+            var userAgent = request.UserAgent;
             var url = request.Url;
             var referer = request.UrlReferrer == null ? string.Empty : request.UrlReferrer.AbsoluteUri;
 
-            if (HasEscapedFragment(request))
-            {
-                return true;
-            }
-
-            if (useAgent.IsBlank())
-            {
-                return false;
-            }
-
-            if (!IsInSearchUserAgent(useAgent))
-            {
-                return false;
-            }
+            var blacklist = _prerenderConfig.Blacklist;
+            if (blacklist != null && IsInBlackList(url, referer, blacklist))
 
 
-            if (IsInResources(url))
+
+
             {
                 return false;
             }
@@ -203,12 +192,23 @@ namespace Prerender.io
                 return false;
             }
 
-            var blacklist = _prerenderConfig.Blacklist;
-            if (blacklist != null && IsInBlackList(url, referer, blacklist))
+            if (HasEscapedFragment(request))
+            {
+                return true;
+            }
+            if (userAgent.IsBlank())
             {
                 return false;
             }
 
+            if (!IsInSearchUserAgent(userAgent))
+            {
+                return false;
+            }
+            if (IsInResources(url))
+            {
+                return false;
+            }
             return true;
 
         }
