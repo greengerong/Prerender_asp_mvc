@@ -68,7 +68,7 @@ namespace Prerender.io
                         response.Headers.Add(header, value);
                     }
                 }
-      
+
                 response.Write(result.ResponseBody);
                 response.Flush();
                 context.CompleteRequest();
@@ -94,7 +94,7 @@ namespace Prerender.io
             try
             {
                 // Get the web response and read content etc. if successful
-                var webResponse = (HttpWebResponse) webRequest.GetResponse();
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
                 var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
                 return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
             }
@@ -122,10 +122,24 @@ namespace Prerender.io
 
         private String GetApiUrl(HttpRequest request)
         {
-            // var url = request.Url.AbsoluteUri; (not working with angularjs)
-            // use request.RawUrl instead of request.Url.AbsoluteUri to get the original url
-            // becuase angularjs requires a rewrite and requests are rewritten to base /
-            var url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, request.RawUrl);
+            if (_prerenderConfig.UseXHostHeader)
+            {
+                var xHostHeader = request.Headers["X-Host"];
+                var url = string.Empty;
+                if (xHostHeader != null)
+                {
+                    // when there is a CDN in front of the WebApp the url might be mistaken with the traffic manager
+                    // therefore the X-Host header provided value should be used instaed of the request.Url
+                    url = string.Format("{0}://{1}{2}", request.Url.Scheme, xHostHeader, request.RawUrl);
+                }
+            }
+            else
+            {
+                // var url = request.Url.AbsoluteUri; (not working with angularjs)
+                // use request.RawUrl instead of request.Url.AbsoluteUri to get the original url
+                // becuase angularjs requires a rewrite and requests are rewritten to base /
+                url = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, request.RawUrl);
+            }
 
             // request.RawUrl have the _escaped_fragment_ query string
             // Prerender server remove it before making a request, but caching plugins happen before prerender server remove it
@@ -139,19 +153,19 @@ namespace Prerender.io
             }
 
             // Remove the application from the URL
-			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-			{
-				// http://test.com/MyApp/?_escape_=/somewhere
-				url = url.Replace(request.ApplicationPath, string.Empty);
-			}
- 
+            if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+            {
+                // http://test.com/MyApp/?_escape_=/somewhere
+                url = url.Replace(request.ApplicationPath, string.Empty);
+            }
+
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
                 : string.Format("{0}/{1}", prerenderServiceUrl, url);
         }
-	
-	public static string RemoveQueryStringByKey(string url, string key)
+
+        public static string RemoveQueryStringByKey(string url, string key)
         {
             var uri = new Uri(url);
 
@@ -268,10 +282,10 @@ namespace Prerender.io
                     // "googlebot", 
                     // "yahoo", 
                     // "bingbot",
-                    "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
-                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
-                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
-                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
+                    "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
+                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
+                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
+                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
                     "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
                 });
 
