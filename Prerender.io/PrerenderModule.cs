@@ -262,13 +262,7 @@ namespace Prerender.io
         {
             var crawlerUserAgents = new List<string>(new[]
                 {
-                    // googlebot, yahoo, and bingbot are not in this list because
-                    // we support _escaped_fragment_ and want to ensure people aren't
-                    // penalized for cloaking.
-                    // "googlebot", 
-                    // "yahoo", 
-                    // "bingbot",
-                    "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
+                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
                     "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
                     "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
                     "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
