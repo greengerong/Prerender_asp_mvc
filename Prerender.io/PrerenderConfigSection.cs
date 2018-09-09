@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -20,18 +20,18 @@ namespace Prerender.io
             }
         }
 
-		[ConfigurationProperty("stripApplicationNameFromRequestUrl", DefaultValue = false)]
-		public bool StripApplicationNameFromRequestUrl
-		{
-			get
-			{
-				return (bool)this["stripApplicationNameFromRequestUrl"];
-			}
-			set
-			{
-				this["stripApplicationNameFromRequestUrl"] = value;
-			}
-		}
+        [ConfigurationProperty("stripApplicationNameFromRequestUrl", DefaultValue = false)]
+        public bool StripApplicationNameFromRequestUrl
+        {
+            get
+            {
+                return (bool)this["stripApplicationNameFromRequestUrl"];
+            }
+            set
+            {
+                this["stripApplicationNameFromRequestUrl"] = value;
+            }
+        }
 
         [ConfigurationProperty("whitelist")]
         public String WhitelistString
