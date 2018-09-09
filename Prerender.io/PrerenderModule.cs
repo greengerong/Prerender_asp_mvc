@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -139,15 +139,15 @@ namespace Prerender.io
             }
 
             // Remove the application from the URL
-			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-			{
-				// http://test.com/MyApp/?_escape_=/somewhere
-				url = url.Replace(request.ApplicationPath, string.Empty);
-			}
- 
+            if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+            {
+                // http://test.com/MyApp/?_escape_=/somewhere
+                url = url.Replace(request.ApplicationPath, string.Empty);
+            }
+
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
-                ? (prerenderServiceUrl + url)
+                ? prerenderServiceUrl + url
                 : string.Format("{0}/{1}", prerenderServiceUrl, url);
         }
 	
@@ -162,7 +162,7 @@ namespace Prerender.io
             newQueryString.Remove(key);
 
             // this gets the page path from root without QueryString
-            string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+            var pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
 
             return newQueryString.Count > 0
                 ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
@@ -178,10 +178,6 @@ namespace Prerender.io
 
             var blacklist = _prerenderConfig.Blacklist;
             if (blacklist != null && IsInBlackList(url, referer, blacklist))
-
-
-
-
             {
                 return false;
             }
@@ -205,15 +201,16 @@ namespace Prerender.io
             {
                 return false;
             }
+
             if (IsInResources(url))
             {
                 return false;
             }
-            return true;
 
+            return true;
         }
 
-        private bool IsInBlackList(Uri url, string referer, IEnumerable<string> blacklist)
+        private static bool IsInBlackList(Uri url, string referer, IEnumerable<string> blacklist)
         {
             return blacklist.Any(item =>
             {
@@ -222,7 +219,7 @@ namespace Prerender.io
             });
         }
 
-        private bool IsInWhiteList(Uri url, IEnumerable<string> whiteList)
+        private static bool IsInWhiteList(Uri url, IEnumerable<string> whiteList)
         {
             return whiteList.Any(item => new Regex(item).IsMatch(url.AbsoluteUri));
         }
@@ -238,7 +235,7 @@ namespace Prerender.io
             var extensionsToIgnore = new List<string>(new[]{".js", ".css", ".less", ".png", ".jpg", ".jpeg",
                 ".gif", ".pdf", ".doc", ".txt", ".zip", ".mp3", ".rar", ".exe", ".wmv", ".doc", ".avi", ".ppt", ".mpg",
                 ".mpeg", ".tif", ".wav", ".mov", ".psd", ".ai", ".xls", ".mp4", ".m4a", ".swf", ".dat", ".dmg",
-                ".iso", ".flv", ".m4v", ".torrent"});
+                ".iso", ".flv", ".m4v", ".torrent", ".xml"});
             if (_prerenderConfig.ExtensionsToIgnore.IsNotEmpty())
             {
                 extensionsToIgnore.AddRange(_prerenderConfig.ExtensionsToIgnore);
@@ -276,7 +273,7 @@ namespace Prerender.io
             return crawlerUserAgents;
         }
 
-        private bool HasEscapedFragment(HttpRequest request)
+        private static bool HasEscapedFragment(HttpRequest request)
         {
             return request.QueryString.AllKeys.Contains(_Escaped_Fragment);
         }
