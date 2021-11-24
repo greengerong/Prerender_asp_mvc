@@ -68,7 +68,7 @@ namespace Prerender.io
                         response.Headers.Add(header, value);
                     }
                 }
-      
+
                 response.Write(result.ResponseBody);
                 response.Flush();
                 context.CompleteRequest();
@@ -131,7 +131,7 @@ namespace Prerender.io
             // Prerender server remove it before making a request, but caching plugins happen before prerender server remove it
             url = RemoveQueryStringByKey(url, "_escaped_fragment_");
 
-            // Correct for HTTPS if that is what the request arrived at the load balancer as 
+            // Correct for HTTPS if that is what the request arrived at the load balancer as
             // (AWS and some other load balancers hide the HTTPS from us as we terminate SSL at the load balancer!)
             if (string.Equals(request.Headers["X-Forwarded-Proto"], "https", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -144,13 +144,13 @@ namespace Prerender.io
 				// http://test.com/MyApp/?_escape_=/somewhere
 				url = url.Replace(request.ApplicationPath, string.Empty);
 			}
- 
+
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
                 : string.Format("{0}/{1}", prerenderServiceUrl, url);
         }
-	
+
 	public static string RemoveQueryStringByKey(string url, string key)
         {
             var uri = new Uri(url);
@@ -262,11 +262,13 @@ namespace Prerender.io
         {
             var crawlerUserAgents = new List<string>(new[]
                 {
-                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
-                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
-                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
-                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
-                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
+                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
+                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
+                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
+                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
+                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot",
+                    "qwantify", "pinterestbot", "bitrix link preview", "xing-contenttabreceiver",
+                    "chrome-lighthouse", "telegrambot";
                 });
 
             if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
